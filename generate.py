@@ -5,8 +5,9 @@ def write_link(f):
 	f.write(b'<link rel="stylesheet" href="styles.css">\n\n')
 
 def write_intro(f):
-	f.write(b'''<h1>Welcome to the Columbia Physics Coffee Hour Videodrome!</h1>
-<p>You can join one of the virtual spaces below. If a room is empty or you don't like the conversation, try going to another room!</p>''' + b'\n\n')
+	f.write(b'''<h1>Welcome to the Columbia Physics Help Room!</h1>
+<p>Please select your course number below. You will then be sent to a virtual room with other students in that course.</p>
+<p>In order for the TA to help every student, please only enter the TA room when you or your group have a question. Then, please leave the TA room when your questions are answered.''' + b'\n\n')
 
 def write_footer(f):
 	f.write(b'''<footer>
