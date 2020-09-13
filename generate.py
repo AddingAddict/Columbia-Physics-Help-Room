@@ -4,9 +4,17 @@ import shutil
 def write_link(f):
 	f.write(b'<link rel="stylesheet" href="styles.css">\n\n')
 
+def write_course_link(f):
+	f.write(b'<link rel="stylesheet" href="../styles.css">\n\n')
+
 def write_intro(f):
 	f.write(b'''<h1>Welcome to the Columbia Physics Help Room!</h1>
-<p>Please select your course number below. You will then be sent to a virtual room with other students in that course.</p>
+<p>Please select your course number below. From there, you can check out the TA schedule and enter one of the rooms.</p>
+<p>In order for the TA to help every student, please only enter the TA room when you or your group have a question. Then, please leave the TA room when your questions are answered.''' + b'\n\n')
+
+def write_course_intro(f, course):
+	f.write(b'<h1>Welcome to the Columbia Physics Help Room for Course ' + course + b'''!</h1>
+<p>You can see the TA schedule below. Please select a room to enter below. You can change your room at any time.</p>
 <p>In order for the TA to help every student, please only enter the TA room when you or your group have a question. Then, please leave the TA room when your questions are answered.''' + b'\n\n')
 
 def write_footer(f):
@@ -17,7 +25,7 @@ def write_footer(f):
 def write_courses(f, courses):
 	f.write(b'<h1>Courses</h1>\n')
 	for i in range(len(courses)):
-		f.write(b'<p><a href="' + courses[i] + b'/room1.html">' + courses[i] + b'</a></p>\n')
+		f.write(b'<p><a href="' + courses[i] + b'/index.html">' + courses[i] + b'</a></p>\n')
 	f.write(b'\n')
 
 def write_rooms(f, nstudrooms, nroom=-1):
@@ -34,6 +42,10 @@ def write_rooms(f, nstudrooms, nroom=-1):
 	else:
 		f.write(b'<a href="room' + str(nstudrooms+1).encode() + b'.html">TA Room</a>')
 	f.write(b'</p>\n\n')
+
+def write_schedule(f, course):
+	f.write(b'''<h1>TA Schedule</h1>
+<img src="../''' + course + b'.png" alt="TA schedule" style="height:calc(100% - 400px); padding-bottom:20px">\n\n')
 
 def write_iframe(f, course, nroom):
 	f.write(b'<iframe src="https://meet.jit.si/CPHRCourse' + course + b'Room' + str(nroom+1).encode() + b'" allow="camera;microphone" style="width:100%; height:calc(100% - 160px)"></iframe>\n\n')
@@ -92,7 +104,9 @@ header ul{width:99%}
 header li,header ul li+li+li{width:33%}}
 @media print{body{padding:0.4in;font-size:12pt;color:#444}}''')
 
-courses = [b'UN1201-Shaevitz', b'UN1201-Dodd', b'UN1401', b'UN1403', b'UN1601']
+# courses = [b'UN1201-Shaevitz', b'UN1201-Dodd', b'UN1401', b'UN1403', b'UN1601']
+pwd = os.getcwd()
+courses = list(sorted(map(lambda file: file[0:-4].encode(), filter(lambda file: '.png' in file, os.listdir(pwd)))))
 nstudrooms = 3
 
 # write styles.css
@@ -100,13 +114,12 @@ with open('styles.css', 'w') as f:
 	write_css(f)
 
 # make directories for each course
-pwd = os.getcwd()
 for course in courses:
 	try:
 		os.mkdir(pwd + '/' + course)
 	except:
 		pass
-	shutil.copy('styles.css', course + '/' + 'styles.css')
+	# shutil.copy('styles.css', course + '/' + 'styles.css')
 
 # write index.html
 with open('index.html', 'w') as f:
@@ -117,9 +130,15 @@ with open('index.html', 'w') as f:
 
 # write /course/room#.html
 for course in courses:
+	with open(course + '/index.html', 'w') as f:
+		write_course_link(f)
+		write_course_intro(f, course)
+		write_schedule(f, course)
+		write_rooms(f, nstudrooms)
+		write_footer(f)
 	for n in range(nstudrooms + 1):
-		with open('' + course + '/room' + str(n+1) + '.html', 'w') as f:
-			write_link(f)
+		with open(course + '/room' + str(n+1) + '.html', 'w') as f:
+			write_course_link(f)
 			write_rooms(f, nstudrooms, n)
 			write_iframe(f, course, n)
 			write_footer(f)
