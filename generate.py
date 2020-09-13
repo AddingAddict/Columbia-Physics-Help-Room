@@ -92,7 +92,7 @@ header ul{width:99%}
 header li,header ul li+li+li{width:33%}}
 @media print{body{padding:0.4in;font-size:12pt;color:#444}}''')
 
-courses = [b'UN1201', b'UN1401', b'UN1403', b'UN1601', b'UN2601', b'UN2801']
+courses = [b'UN1201-Shaevitz', b'UN1201-Dodd', b'UN1401', b'UN1403', b'UN1601']
 nstudrooms = 3
 
 # write styles.css
