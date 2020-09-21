@@ -104,10 +104,19 @@ header ul{width:99%}
 header li,header ul li+li+li{width:33%}}
 @media print{body{padding:0.4in;font-size:12pt;color:#444}}''')
 
-# courses = [b'UN1201-Shaevitz', b'UN1201-Dodd', b'UN1401', b'UN1403', b'UN1601']
+courses = [b'UN1201-Shaevitz', b'UN1201-Dodd', b'UN1401', b'UN1403', b'UN1601']
 pwd = os.getcwd()
-courses = list(sorted(map(lambda file: file[0:-4].encode(), filter(lambda file: '.png' in file, os.listdir(pwd)))))
+# courses = list(sorted(map(lambda file: file[0:-4].encode(), filter(lambda file: '.png' in file, os.listdir(pwd)))))
 nstudrooms = 3
+
+# sched_id = b'1H6gcrSlbn07FCXwlsoLYI-wH9QeDpY-917sJPh6tl_M'
+# sched_gid = {
+# 	b'UN1201-Shaevitz':	b'1317068772',
+# 	b'UN1201-Dodd': 	b'1761739564',
+# 	b'UN1401':			b'76900165',
+# 	b'UN1403':			b'699048309',
+# 	b'UN1601':			b'358473072'
+# }
 
 # write styles.css
 with open('styles.css', 'w') as f:
@@ -133,8 +142,8 @@ for course in courses:
 	with open(course + '/index.html', 'w') as f:
 		write_course_link(f)
 		write_course_intro(f, course)
-		write_schedule(f, course)
 		write_rooms(f, nstudrooms)
+		write_schedule(f, course)
 		write_footer(f)
 	for n in range(nstudrooms + 1):
 		with open(course + '/room' + str(n+1) + '.html', 'w') as f:
