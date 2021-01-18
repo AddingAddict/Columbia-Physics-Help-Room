@@ -13,7 +13,7 @@ function init() {
 	if((day >= 0 && day <4 && hour >= 1 && hour <= 8) || (day == 4 && hour >= 1 && hour <= 3)) {
 		time.innerText = "Current Time Slot: " + days[day] + " " + hour + ":00-" + (hour+1) + ":00 PM"
 		slot = document.getElementById(dayCode[day] + hour)
-		if(slot.childNodes.length = 0) {
+		if(slot.childNodes.length == 0) {
 			ta.innerText = "No TA Assigned to this Time Slot"
 			zoom.innerText = ""
 		} else {
